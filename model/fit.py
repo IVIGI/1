@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import LabelEncoder
 
+
 iris_df = pd.read_csv("penguins1.csv")
 label_encoder = LabelEncoder()
 iris_df["island"] = label_encoder.fit_transform(iris_df["island"])

@@ -1,6 +1,6 @@
 import pickle
 import numpy as np
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, jsonify, Response, json
 
 app = Flask(__name__)
 
@@ -77,5 +77,21 @@ def f_lab3():
         return render_template('lab3.html', title="Дерево решений", menu=menu,
                                class_model="Это: " + gender)
 
+@app.route('/api_v2',methods=['get'])
+def get_sort_v2():
+    X_new = np.array([[int(request.args.get('list1')),
+                       int(request.args.get('list2')),
+                       int(request.args.get('list3')),
+                       float(request.args.get('list4')),
+                       float(request.args.get('list5')),
+                       int(request.args.get('list6')),
+                       int(request.args.get('list7')),
+                       int(request.args.get('list8'))]])
+    pred = loaded_model_knn.predict(X_new)
+    gender = gender_dict[pred[0]]
+    response = Response(response=json.dumps({'gender': gender}, ensure_ascii=False).encode('utf8'),
+                        status=200,
+                        mimetype='application/json; charset=utf-8')
+    return response
 if __name__ == "__main__":
     app.run(debug=True)
