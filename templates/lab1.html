@@ -17,4 +17,24 @@
     </p>
 </form>
 
+<div>
+    {% for metric in parametr[:3]%}
+        {% if metric.type == "KNN" %}
+    <li>
+        <b>{{metric.name}}:</b>
+        Predicted : {{ metric.value.Predicted}} <br>
+        actual: {{metric.value.Actual}}
+    </li>
+    {%endif%}
+    {% endfor %}
+    {%for metric in parametr[3:]%}
+    {%if metric.type == "KNN" %}
+    <li>
+        <b> {{metric.name}}:</b>
+        {{metric.value}}
+    </li>
+    {%endif%}
+    {%endfor%}
+</div>
+
 {% endblock %}
