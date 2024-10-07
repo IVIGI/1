@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<p>Метод нейрона</p>
+<form action="/p_lab4" method="POST">
+    <input type="text" name="power" placeholder="Мощность" required>
+    <input type="text" name="consumption" placeholder="Потребление" required>
+    <input type="text" name="fps" placeholder="FPS" required>
+    <input type="submit" class="form_btn" value="Спрогнозировать">
+</form>
+<h1>{{ class_model }}</h1>
+{% endblock %}

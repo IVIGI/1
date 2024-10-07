@@ -1,6 +1,9 @@
 import pickle
 import numpy as np
 from flask import Flask, render_template, url_for, request, jsonify, Response, json
+from model4.neuron import SingleNeuron
+
+new_neuron = SingleNeuron()
 
 app = Flask(__name__)
 
@@ -11,7 +14,8 @@ gender_dict = {
 
 menu = [{"name": "Лаба 1", "url": "p_knn"},
         {"name": "Лаба 2", "url": "p_lab2"},
-        {"name": "Лаба 3", "url": "p_lab3"}]
+        {"name": "Лаба 3", "url": "p_lab3"},
+        {"name": "Лаба 4", "url": "p_lab4"}]
 
 loaded_model_knn = pickle.load(open('model/Iris_pickle_fileKNN', 'rb'))
 loaded_model_Log = pickle.load(open('model2/Iris_pickle_file', 'rb'))
@@ -109,6 +113,34 @@ def get_sort_v2():
                         mimetype='application/json; charset=utf-8')
 
     return response
+
+@app.route("/p_lab4", methods=['POST', 'GET'])
+def f_lab4():
+    if request.method == 'GET':
+        return render_template('lab4.html', title="Первый нейрон", menu=menu, class_model='')
+
+    if request.method == 'POST':
+        try:
+            power = float(request.form['power'])
+            consumption = float(request.form['consumption'])
+            fps = float(request.form['fps'])
+            print(f"Полученные данные - мощность: {power}, потребление: {consumption}, FPS: {fps}")
+            X_new = np.array([[power, consumption, fps]])
+            predictions = new_neuron.forward(X_new)
+            print("Предсказанные значения (до обработки):", predictions)
+            predicted_label = 'Geforce' if predictions[0] >= 0.5 else 'AMD'
+            print("Предсказанное значение:", predicted_label)
+            return render_template('lab4.html', title="Первый нейрон", menu=menu,
+                                   class_model="Это: " + predicted_label)
+        except ValueError as ve:
+            print(f"Ошибка преобразования входных данных: {ve}")
+            return render_template('lab4.html', title="Первый нейрон", menu=menu,
+                                   class_model="Ошибка: Проверьте правильность введенных данных.")
+        except Exception as e:
+            print(f"Общая ошибка: {e}")
+            return render_template('lab4.html', title="Первый нейрон", menu=menu,
+                                   class_model="Ошибка при обработке входных данных.")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
