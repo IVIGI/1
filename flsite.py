@@ -117,7 +117,7 @@ def get_sort_v2():
 @app.route("/p_lab4", methods=['POST', 'GET'])
 def f_lab4():
     if request.method == 'GET':
-        return render_template('lab4.html', title="Первый нейрон", menu=menu, class_model='')
+        return render_template('lab4.html', title="Первый, нейрон", menu=menu, class_model='')
 
     if request.method == 'POST':
         try:
